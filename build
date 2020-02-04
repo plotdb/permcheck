@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+mkdir -p dist
+echo "build src/permcheck.ls -> dist/permcheck.js ..."
+./node_modules/.bin/lsc -cbp src/permcheck.ls > dist/permcheck.js
+echo "minifying permcheck.js ..."
+./node_modules/.bin/uglifyjs dist/permcheck.js > dist/permcheck.min.js
+#echo "deploy into local web ..."
+#mkdir -p web/static/assets/lib/
+#cp -R dist/* web/static/assets/lib/
+echo "done."
+
