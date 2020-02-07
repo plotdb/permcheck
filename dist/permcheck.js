@@ -3,20 +3,28 @@
   var acts, check;
   acts = ['list', 'read', 'write', 'admin'];
   check = function(arg$){
-    var obj, perm, action;
-    obj = arg$.obj, perm = arg$.perm, action = arg$.action;
+    var role, perm, action;
+    role = arg$.role, perm = arg$.perm, action = arg$.action;
     return new Promise(function(res, rej){
-      var ret, i$, ref$, len$, p, o, act, a, v, idx, k;
+      var ret, plist, i$, len$, p, o, act, a, v, idx, k;
       ret = {};
-      for (i$ = 0, len$ = (ref$ = perm.list).length; i$ < len$; ++i$) {
-        p = ref$[i$];
+      if (Array.isArray(perm)) {
+        plist = [];
+        perm.map(function(){
+          return plist = plist.concat(perm.list);
+        });
+      } else {
+        plist = perm.list;
+      }
+      for (i$ = 0, len$ = plist.length; i$ < len$; ++i$) {
+        p = plist[i$];
         if (!p.action) {
           continue;
         }
         if (!p.type) {
           ret[p.action] = true;
         }
-        if (!(o = obj[p.type])) {
+        if (!(o = role[p.type])) {
           continue;
         }
         if (in$(p.key, o)) {

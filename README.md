@@ -5,17 +5,17 @@ Permission Control
 
 ## Spec
 
-permcheck specifies the action level of a certain obj over certain permission:
+permcheck specifies the action level of a certain role over certain permission:
 
 ```
-    permcheck({obj, perm, action})
+    permcheck({role, perm, action})
       .then( ... )
       .catch( ... );
 ```
 
-### obj
+### role
 
-`obj` provides information of the attributes of a certain instance, such as an user. For example, assume an user with key `1` is a member of team `1`, `2`, `3` and access certain resource with a token `a`, then the `obj` will be:
+`role` provides information of the attributes of a certain instance, such as an user. For example, assume an user with key `1` is a member of team `1`, `2`, `3` and access certain resource with a token `a`, then the `role` will be:
 
 ```
     {
@@ -53,10 +53,10 @@ For default actions, admin action is by default can write, write action is by de
 
 ## Usage
 
-To check permission for specific role over certain resource, prepare both `obj` (for role) and `perm` (for resource) object, and check for desired action:
+To check permission for specific role over certain resource, prepare both `role` and `perm` object, and check for desired action:
 
 ```
-    permcheck({obj, perm, action})
+    permcheck({role, perm, action})
       .then( ... )   # action granted
       .catch( ... ); # action denied
 ```
@@ -64,16 +64,56 @@ To check permission for specific role over certain resource, prepare both `obj` 
 `action` could be an array ( for checking multiple actions ) or a simple string:
 
 ```
-    permcheck({obj, perm, action: ["read", "fork"]});
+    permcheck({role, perm, action: ["read", "fork"]});
 ```
 
 You can also ignore the `action` parameter at all for listing all granted actions for certain object:
 
 ```
-    permcheck({obj, perm}).then(function(actionList) { ... });
+    permcheck({role, perm}).then(function(actionList) { ... });
 ```
 
 All available actions will be listed as strings ( above `actionList` argument ) with Promise.
+
+
+### Multiple Permission Sets
+
+You can combine multiple permission objects to make it easier to check through different set of permission rules:
+
+```
+    permcheck({role, perm: [perm1, perm2]}).then( ... );
+```
+
+For example, following example controls permission with a per-object permission and per-type permission:
+
+```
+    require("perms");
+    objperm = {
+      list: [
+        {action: 'list'},
+        {type: 'user', key: 1, action: 'read'},
+      ]
+    };
+    role = {
+      user: [2],
+      role: ["reviewer"]
+    };
+    permcheck({role, perm: [objperm, perms.article]}).then( ... );
+```
+
+where perms can be a hardcoded file with following content:
+
+```
+    module.exports {
+      article: {
+        list: [
+          {'type': 'role', 'key': 'admin', action: 'admin'},
+          {'type': 'role', 'key': 'owner', action: 'admin'}
+          {'type': 'role', 'key': 'reviewer', action: 'comment'}
+        ]
+      }
+    };
+```
 
 
 ## Compatibility

@@ -1,4 +1,4 @@
-permcheck = require "../permcheck"
+permcheck = require "../src/permcheck"
 
 perm = do
   list: [
@@ -9,14 +9,16 @@ perm = do
   ]
 
 act = \comment
-obj = do
+role = do
   user: [2]
 
-permcheck {obj, perm, action: \comment}
-  .then -> console.log "pass"
-  .catch -> console.log "fail"
-
-permcheck {obj, perm}
-  .then -> console.log "pass", it
-  .catch -> console.log "fail"
+permcheck {role, perm, action: \comment}
+  .finally -> console.log "expect: fail:"
+  .then -> console.log " * pass"
+  .catch -> console.log " * fail"
+  .then ->
+    permcheck {role, perm}
+  .finally -> console.log "expect: pass ['read']:"
+  .then -> console.log " * pass", it
+  .catch -> console.log " * fail"
 

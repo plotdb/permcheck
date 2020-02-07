@@ -1,12 +1,16 @@
 (->
   acts = <[list read write admin]>
 
-  check = ({obj, perm, action}) -> new Promise (res, rej) ->
+  check = ({role, perm, action}) -> new Promise (res, rej) ->
     ret = {}
-    for p in perm.list =>
+    if Array.isArray(perm) =>
+      plist = []
+      perm.map -> plist ++= perm.list
+    else plist = perm.list
+    for p in plist =>
       if !p.action => continue
       if !p.type => ret[p.action] = true
-      if !(o = obj[p.type]) => continue
+      if !(o = role[p.type]) => continue
       if p.key in o => ret[p.action] = true
     if action =>
       act = if Array.isArray(action) => action else [action]
