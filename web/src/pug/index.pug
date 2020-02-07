@@ -1,0 +1,13 @@
+doctype html
+html
+  include /../../static/assets/lib/ldui/pug/ldui.pug
+  head
+    +css("https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")
+    +css("/assets/lib/ldui/ldui.min.css")
+  body
+    .w-1024.rwd.mx-auto.typeset.heading-contrast.py-4
+      h2.mb-1 Permcheck
+      p.text-muted JavaScript Library for Permission Check and Access Control
+      hr
+
+    +script("/assets/lib/ldui/ldui.min.js")
