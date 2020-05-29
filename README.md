@@ -35,6 +35,7 @@ In the meanwhile, the requested resource contains permission information for con
         {type: "...", key: "...", action: "..."},
         ...
       ]
+      config: { ... }
     }
 ```
 
@@ -49,6 +50,17 @@ Each entry in the list contains following fields:
    - admin: full control ( delete )
 
 For default actions, admin action is by default can write, write action is by default can read, etc.
+
+#### Variation ( To Be Implemented )
+
+Additionally, if action is omitted and config is provided, permcheck will instead check if
+
+ * `role` matches any entry in `list`
+ * action is true in `config`.
+
+`config` is an object with actions as each of its key.
+
+If `perm` is an array, then permission should be granted if `role` matches any of the permission matched.
 
 
 ## Usage
