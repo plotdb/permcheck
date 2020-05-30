@@ -25,7 +25,7 @@ permcheck specifies the action level of a certain role over certain permission:
     }
 ```
  
-### perm 
+### perm - by action level
 
 In the meanwhile, the requested resource contains permission information for controlling access to it. It will be an object in following format:
 
@@ -35,7 +35,6 @@ In the meanwhile, the requested resource contains permission information for con
         {type: "...", key: "...", action: "..."},
         ...
       ]
-      config: { ... }
     }
 ```
 
@@ -51,9 +50,20 @@ Each entry in the list contains following fields:
 
 For default actions, admin action is by default can write, write action is by default can read, etc.
 
-#### Variation ( To Be Implemented )
+### perm - by action type
 
-Additionally, if action is omitted and config is provided, permcheck will instead check if
+```
+    {
+      name: 'optional-group-name',
+      list: [
+        {type: "...", key: "..."},
+        ...
+      ]
+      config: { ... }
+    }
+```
+
+Additionally, if config is supplied within the perm object, permcheck will instead check if
 
  * `role` matches any entry in `list`
  * action is true in `config`.
