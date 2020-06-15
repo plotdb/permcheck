@@ -68,7 +68,7 @@
     var role, perm, action;
     role = arg$.role, perm = arg$.perm, action = arg$.action;
     return new Promise(function(res, rej){
-      var ret, plist, i$, len$, p, o, act, a, v, idx, k;
+      var ret, plist, i$, ref$, len$, p, o, act, a, v, idx, k;
       ret = {};
       if (Array.isArray(perm)) {
         plist = [];
@@ -78,8 +78,8 @@
       } else {
         plist = perm.list;
       }
-      for (i$ = 0, len$ = plist.length; i$ < len$; ++i$) {
-        p = plist[i$];
+      for (i$ = 0, len$ = (ref$ = plist || []).length; i$ < len$; ++i$) {
+        p = ref$[i$];
         if (!p.action) {
           continue;
         }

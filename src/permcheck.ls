@@ -33,7 +33,7 @@
       plist = []
       perm.map (p) -> plist ++= p.list
     else plist = perm.list
-    for p in plist =>
+    for p in (plist or []) =>
       if !p.action => continue
       # no type means anyone can match this.
       if !p.type => ret[p.action] = true
